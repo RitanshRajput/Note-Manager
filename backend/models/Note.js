@@ -10,6 +10,10 @@ const noteSchema = new mongoose.Schema(
       type: String,
       required: [true, "Note content is required"],
     },
+    image: {
+      type: String,
+      defualt: "",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Reference to the user who created this note
