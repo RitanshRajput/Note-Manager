@@ -5,6 +5,23 @@ const upload = require("../middleware/uploadMiddleware");
 
 const router = express.Router();
 
+// Helper funtion to delete an image from the server
+const deleteImage = (imagePath) => {
+  const fullPath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    path.basename(imagePath)
+  );
+  fs.unlink(fullPath, (err) => {
+    if (err) {
+      console.error(`Failed to delete image: ${imagePath}`, err);
+    } else {
+      console.log(`Successfully deleted image: ${imagePath}`);
+    }
+  });
+};
+
 // Route to create a new Note
 router.post("/create", protect, upload.single("image"), async (req, res) => {
   const { title, content } = req.body;
@@ -82,12 +99,18 @@ router.put("/:id", protect, upload.single("image"), async (req, res) => {
       res.status(404).json({ message: "Note not found" });
     }
 
+    if (req.file && note.image) {
+      deleteImage(note.image);
+    }
+
     note.title = title;
     note.content = content;
 
     if (!imagePath) {
       note.image = imagePath;
     }
+
+    await note.save();
 
     res.json(note);
   } catch (error) {
@@ -107,6 +130,10 @@ router.delete("/:id", protect, async (req, res) => {
 
     if (!note) {
       res.status(404).json({ message: "Note not found" });
+    }
+
+    if (note.image) {
+      deleteImage(note.image);
     }
 
     res.json({ message: "Note Deleted Successfully" });
