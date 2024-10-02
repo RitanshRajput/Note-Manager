@@ -21,7 +21,7 @@ mongoose
   .catch((err) => console.log("❌ Mongodb having some error : ", err));
 
 app.get("/", (req, res) => {
-  console.log("Welcome to Note Manager API");
+  res.send("Welcome to the Note Manager API");
 });
 
 app.use("/api/users", userRoutes);
