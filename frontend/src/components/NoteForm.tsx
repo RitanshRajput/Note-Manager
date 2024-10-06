@@ -61,6 +61,7 @@ const NoteForm: React.FC<NoteFormProps> = ({
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-2 border rounded text-black"
             required
+            placeholder="Character limit 33"
           />
         </div>
         <div className="mb-4">
