@@ -1,17 +1,36 @@
 const Note = require("../models/Note");
+const path = require("path");
+const fs = require("fs");
+
+// Helper funtion to delete an image from the server
+const deleteImage = (imagePath) => {
+  const fullPath = path.join(
+    __dirname,
+    "..",
+    "uploads",
+    path.basename(imagePath)
+  );
+  fs.unlink(fullPath, (err) => {
+    if (err) {
+      console.error(`Failed to delete image: ${imagePath}`, err);
+    } else {
+      console.log(`Successfully deleted image: ${imagePath}`);
+    }
+  });
+};
 
 const createNote = async (req, res) => {
   const { title, content } = req.body;
   let imagePath = "";
 
+  if (!title || !content) {
+    return res.status(400).json({ message: "Title and content are required" });
+  }
+
   if (req.file) {
     imagePath = `${req.protocol}://${req.get("host")}/uploads/${
       req.file.filename
     }`;
-  }
-
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content are required" });
   }
 
   try {
@@ -31,7 +50,7 @@ const createNote = async (req, res) => {
 };
 
 const getNotes = async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const { page = 1, limit = 9, search = "" } = req.query;
 
   try {
     const searchQuery = search
@@ -87,7 +106,7 @@ const updateNote = async (req, res) => {
     note.title = title;
     note.content = content;
 
-    if (!imagePath) {
+    if (imagePath) {
       note.image = imagePath;
     }
 

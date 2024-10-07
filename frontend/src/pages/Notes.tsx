@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import NoteForm from "../components/NoteForm";
 import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
+import { CiMenuKebab } from "react-icons/ci";
+import { AiOutlinePlus } from "react-icons/ai";
 
 interface Note {
   _id: string;
   title: string;
   content: string;
+  image?: string;
 }
 
 const Notes: React.FC = () => {
@@ -15,12 +18,14 @@ const Notes: React.FC = () => {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showForm, setShowForm] = useState(false);
+  const [showEditDelete, setShowEditDelete] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token
+        const token = localStorage.getItem("token");
         const response = await fetch(
           `http://127.0.0.1:5000/api/notes?page=${page}`,
           {
@@ -30,10 +35,9 @@ const Notes: React.FC = () => {
           }
         );
         if (response.status === 401) {
-          navigate("/login"); // Redirect to login if unauthorized
+          navigate("/login");
         } else {
           const data = await response.json();
-          // console.log("Fetched notes data:", data);
           if (Array.isArray(data.notes)) {
             setNotes(data.notes);
             setTotalPages(data.totalPages);
@@ -49,20 +53,30 @@ const Notes: React.FC = () => {
     fetchNotes();
   }, [navigate, page]);
 
-  const addNote = async (title: string, content: string) => {
+  const addNote = async (
+    title: string,
+    content: string,
+    image: File | null
+  ) => {
     try {
       const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      if (image) {
+        formData.append("image", image);
+      }
+
       const response = await fetch("http://127.0.0.1:5000/api/notes/create", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, content }),
+        body: formData,
       });
       if (response.ok) {
         const newNote = await response.json();
-        setNotes([...notes, newNote]); // add the new note to the list
+        setNotes([...notes, newNote]);
       }
     } catch (error) {
       console.error("Error adding notes: ", error);
@@ -72,7 +86,7 @@ const Notes: React.FC = () => {
   const deleteNote = async (id: string) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://127.0.01:5000/api/notes/${id}`, {
+      await fetch(`http://127.0.0.1:5000/api/notes/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,21 +101,28 @@ const Notes: React.FC = () => {
   const updateNote = async (
     id: string,
     updatedTitle: string,
-    updatedContent: string
+    updatedContent: string,
+    image: File | null
   ) => {
     try {
       const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("title", updatedTitle);
+      formData.append("content", updatedContent);
+      if (image) {
+        formData.append("image", image);
+      }
+
       const response = await fetch(`http://127.0.0.1:5000/api/notes/${id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: updatedTitle, content: updatedContent }),
+        body: formData,
       });
       if (response.ok) {
         const updatedNote = await response.json();
-        setNotes(notes.map((note) => (note._id == id ? updatedNote : note)));
+        setNotes(notes.map((note) => (note._id === id ? updatedNote : note)));
         setEditingNote(null);
       }
     } catch (error) {
@@ -111,10 +132,11 @@ const Notes: React.FC = () => {
 
   const handleEdit = (note: Note) => {
     setEditingNote(note);
+    setShowForm(true);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); //remove token on logout
+    localStorage.removeItem("token");
     navigate("/");
   };
 
@@ -124,87 +146,137 @@ const Notes: React.FC = () => {
     }
   };
 
+  const handleMenuToggle = (noteId: string) => {
+    setShowEditDelete(showEditDelete === noteId ? null : noteId);
+  };
+
   return (
-    <div className="p-8 ">
+    <div className="p-8 bg-white">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl text-neonOceanBlue">Your Notes</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded"
-        >
-          Logout
-        </button>
-      </div>
-      <NoteForm
-        addNote={addNote}
-        editingNote={editingNote}
-        updateNote={updateNote}
-      />{" "}
-      {/* Note creation form */}
-      <div className="p-4 flex flex-col items-center gap-6">
-        {notes.map((note) => (
-          <div
-            key={note._id}
-            className="bg-pitchBlack border border-red-700 rounded shadow-md"
-            style={{
-              width: "40%",
-              height: "200px",
-              overflowY: "auto",
-              padding: "10px",
-            }} // Added padding
+        <h1 className=" mt-[-20px] text-4xl text-neonOceanBlue font-bold">
+          Note Manager
+        </h1>
+        <div className="flex">
+          <button
+            onClick={handleLogout}
+            className="bg-white border border-black text-black py-2 px-4 rounded mr-2"
           >
-            <div className="flex justify-between items-start">
-              <h2
-                className="text-2xl text-pink-700 mb-2 capitalize "
-                style={{ paddingRight: "40px" }}
-              >
-                {note.title.length > 33
-                  ? `${note.title.slice(0, 33)}...`
-                  : note.title}{" "}
-              </h2>
-              <div className="flex flex-col">
-                {/* Added flex column for buttons */}
-                <button
-                  onClick={() => handleEdit(note)}
-                  className="text-yellow-500 mb-1 py-1 px-2 rounded bg-gray-700 hover:bg-gray-600 transition"
+            Logout
+          </button>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-red-500 text-black py-2 px-4 rounded flex items-center border border-black"
+          >
+            <AiOutlinePlus className="mr-2" />
+            New Note
+          </button>
+        </div>
+      </div>
+
+      {showForm && (
+        <>
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-40"
+            onClick={() => setShowForm(false)}
+          />
+          <NoteForm
+            addNote={addNote}
+            editingNote={editingNote}
+            updateNote={updateNote}
+            closeForm={() => setShowForm(false)}
+          />
+        </>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 mx-4 my-12">
+        {notes.map((note, index) => {
+          const backgroundColors = [
+            "bg-yellow-200",
+            "bg-pink-200",
+            "bg-blue-200",
+          ];
+          const backgroundColor =
+            backgroundColors[index % backgroundColors.length];
+
+          return (
+            <div
+              key={note._id}
+              className={`rounded-md shadow-sm ${backgroundColor} p-4 relative border border-black`}
+            >
+              {showEditDelete === note._id && (
+                <div className="absolute inset-0 bg-black bg-opacity-30 z-10 flex items-center justify-center">
+                  <button
+                    onClick={() => setShowEditDelete(null)} // Close the menu
+                    className="text-smokeWhite absolute top-1 right-2 text-sm "
+                  >
+                    Close
+                  </button>
+                  <div className="flex justify-center space-x-2 z-20">
+                    <button
+                      onClick={() => handleEdit(note)}
+                      className="text-yellow-500 mb-1 py-1 rounded bg-gray-700 hover:bg-gray-600 transition flex items-center w-[35px] h-[35px]"
+                    >
+                      <FiEdit className="inline-block ml-2" />
+                    </button>
+                    <button
+                      onClick={() => deleteNote(note._id)}
+                      className="text-red-500 py-1 px-2 rounded bg-gray-700 hover:bg-gray-600 transition flex items-center w-[35px] h-[35px]"
+                    >
+                      <FaTrash className="inline-block" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              <div className="flex justify-between items-center">
+                <h2
+                  className="text-black text-xl font-bold mb-2 capitalize"
+                  style={{
+                    maxWidth: "30ch",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
-                  <FiEdit className="inline-block" />
-                </button>
-                <button
-                  onClick={() => deleteNote(note._id)}
-                  className="text-red-500 py-1 px-2 rounded bg-gray-700 hover:bg-gray-600 transition"
-                >
-                  <FaTrash className="inline-block" />
+                  {note.title}
+                </h2>
+                <button onClick={() => handleMenuToggle(note._id)}>
+                  <CiMenuKebab className="text-black" />
                 </button>
               </div>
+              <div>
+                <p className="text-black text-md">{note.content}</p>
+              </div>
+              {note.image && (
+                <div className="mb-1">
+                  <img
+                    src={note.image}
+                    alt="note"
+                    className="w-32 h-32 border rounded"
+                  />
+                </div>
+              )}
             </div>
-            <p
-              className="text-lg text-whiteSmoke capitalize"
-              style={{ paddingTop: "10px" }}
-            >
-              {note.content}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      {/* Pagination */}
+
       <div className="flex justify-center mt-4">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}
-          className={`mr-2 bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded ${
-            page === 1 ? "opacity-50 cursor-not-allowed" : ""
+          className={`mr-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded  border border-blue-800  ${
+            page === 1 ? "opacity-35 cursor-not-allowed" : ""
           }`}
         >
           Previous
         </button>
-        <span className="text-whiteSmoke">
+        <span className="text-whiteSmoke mt-2">
           Page {page} of {totalPages}
         </span>
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages}
-          className={`ml-2 bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded ${
+          className={`ml-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded border border-blue-800 ${
             page === totalPages ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
