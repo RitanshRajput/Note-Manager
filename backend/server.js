@@ -27,8 +27,11 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/notes", noteRoutes);
 
-const PORT = process.env.PORT || 5000;
+module.exports = app;
+if (require.main === module) {
+  const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
-  console.log(`Server is Running on Port ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server is Running on Port ${PORT}`);
+  });
+}

@@ -4,12 +4,7 @@ const fs = require("fs");
 
 // Helper funtion to delete an image from the server
 const deleteImage = (imagePath) => {
-  const fullPath = path.join(
-    __dirname,
-    "..",
-    "uploads",
-    path.basename(imagePath)
-  );
+  const fullPath = path.join(__dirname, "..", "uploads", path.basename(imagePath));
   fs.unlink(fullPath, (err) => {
     if (err) {
       console.error(`Failed to delete image: ${imagePath}`, err);
@@ -28,9 +23,7 @@ const createNote = async (req, res) => {
   }
 
   if (req.file) {
-    imagePath = `${req.protocol}://${req.get("host")}/uploads/${
-      req.file.filename
-    }`;
+    imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
   }
 
   try {
@@ -43,9 +36,7 @@ const createNote = async (req, res) => {
     await note.save();
     res.status(201).json(note);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating note", error: error.message });
+    res.status(500).json({ message: "Error creating note", error: error.message });
   }
 };
 
@@ -72,9 +63,7 @@ const getNotes = async (req, res) => {
       totalNotes: count,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching notes", error: error.message });
+    res.status(500).json({ message: "Error fetching notes", error: error.message });
   }
 };
 
@@ -83,9 +72,7 @@ const updateNote = async (req, res) => {
   let imagePath = "";
 
   if (req.file) {
-    imagePath = `${req.protocol}://${req.get("host")}/uploads/${
-      req.file.filename
-    }`;
+    imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
   }
 
   if (!title || !content) {
@@ -114,9 +101,7 @@ const updateNote = async (req, res) => {
 
     res.json(note);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error Updating Note", error: error.message });
+    res.status(500).json({ message: "Error Updating Note", error: error.message });
   }
 };
 
@@ -137,9 +122,7 @@ const deleteNote = async (req, res) => {
 
     res.json({ message: "Note Deleted Successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting Note", error: error.message });
+    res.status(500).json({ message: "Error deleting Note", error: error.message });
   }
 };
 
