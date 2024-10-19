@@ -28,7 +28,7 @@ const Register: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/users/register", {
+      const response = await fetch("https://ritz-note-manager.onrender.com/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,8 +55,7 @@ const Register: React.FC = () => {
         <h2 className="text-2xl text-neonOceanBlue mb-6">Register</h2>
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 text-black">
-            Name:{" "}
-            {errors.name && <span className="text-red-500">* required</span>}
+            Name: {errors.name && <span className="text-red-500">* required</span>}
           </label>
           <input
             type="text"
@@ -70,8 +69,7 @@ const Register: React.FC = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="block mb-2 text-black">
-            Email:{" "}
-            {errors.email && <span className="text-red-500">* required</span>}
+            Email: {errors.email && <span className="text-red-500">* required</span>}
           </label>
           <input
             type="email"
@@ -85,10 +83,7 @@ const Register: React.FC = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block mb-2 text-black">
-            Password:{" "}
-            {errors.password && (
-              <span className="text-red-500">* required</span>
-            )}
+            Password: {errors.password && <span className="text-red-500">* required</span>}
           </label>
           <div className="relative">
             <input
@@ -109,10 +104,7 @@ const Register: React.FC = () => {
             </button>
           </div>
         </div>
-        <button
-          type="submit"
-          className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded"
-        >
+        <button type="submit" className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded">
           Register
         </button>
       </form>

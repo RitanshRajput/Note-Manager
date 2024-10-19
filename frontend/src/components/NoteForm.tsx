@@ -10,21 +10,11 @@ interface Note {
 interface NoteFormProps {
   addNote: (title: string, content: string, image: File | null) => void;
   editingNote: Note | null;
-  updateNote: (
-    id: string,
-    title: string,
-    content: string,
-    image: File | null
-  ) => void;
+  updateNote: (id: string, title: string, content: string, image: File | null) => void;
   closeForm: () => void; // New prop to close the form
 }
 
-const NoteForm: React.FC<NoteFormProps> = ({
-  addNote,
-  editingNote,
-  updateNote,
-  closeForm,
-}) => {
+const NoteForm: React.FC<NoteFormProps> = ({ addNote, editingNote, updateNote, closeForm }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -68,98 +58,6 @@ const NoteForm: React.FC<NoteFormProps> = ({
     }
   };
 
-  // return (
-  //   <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white bg-opacity-30 ">
-  //     <div
-  //       className="bg-opacity-80 p-4 rounded border border-white  mb-6 w-[40%] relative shadow shadow-fuchsia-200 shadow-md"
-  //       onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
-  //     >
-  //       {/* Close button */}
-  //       <button
-  //         onClick={closeForm}
-  //         className="absolute top-2 right-2 text-3xl text-whiteSmoke"
-  //       >
-  //         &times; {/* Close icon */}
-  //       </button>
-  //       <h2 className="text-3xl font-bold text-white mb-4 text-center capitalize">
-  //         {editingNote ? "Edit Note" : "Create a New Note"}
-  //       </h2>
-  //       <form onSubmit={handleSubmit}>
-  //         <div className="mb-4 ">
-  //           <label
-  //             htmlFor="title"
-  //             className="block mb-2 text-pitchBlack capitalize text-xl "
-  //           >
-  //             Title (max 33 characters):
-  //           </label>
-  //           <input
-  //             type="text"
-  //             id="title"
-  //             value={title}
-  //             onChange={(e) => setTitle(e.target.value)}
-  //             className="w-full p-2 border rounded text-black"
-  //             required
-  //             maxLength={33}
-  //             placeholder="Character limit 33"
-  //           />
-  //         </div>
-  //         <div className="mb-4">
-  //           <label
-  //             htmlFor="content"
-  //             className="block mb-2 text-whiteSmoke capitalize text-xl"
-  //           >
-  //             Content:
-  //           </label>
-  //           <textarea
-  //             id="content"
-  //             value={content}
-  //             onChange={(e) => setContent(e.target.value)}
-  //             className="w-full p-2 border rounded text-black"
-  //             required
-  //           />
-  //         </div>
-
-  //         <div className="mb-4">
-  //           <label className="block mb-2 text-smokeWhite capitalize text-xl">
-  //             Image:
-  //           </label>
-  //           <button
-  //             type="button"
-  //             onClick={() => document.getElementById("imageInput")?.click()}
-  //             className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded"
-  //           >
-  //             Upload an Image
-  //           </button>
-  //           <input
-  //             type="file"
-  //             id="imageInput"
-  //             onChange={handleImageChange}
-  //             className="hidden"
-  //           />
-  //         </div>
-  //         {imagePreview && (
-  //           <div className="mb-4">
-  //             <img
-  //               src={imagePreview}
-  //               alt="preview"
-  //               className="w-24 h-24 border rounded"
-  //             />
-  //           </div>
-  //         )}
-
-  //         <div className="flex justify-center">
-  //           <button
-  //             type="submit"
-  //             className="bg-red-500 text-smokeWhite py-2 px-4 rounded"
-  //           >
-  //             {editingNote ? "Update Note" : "Add Note"}
-  //           </button>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white bg-opacity-30 ">
       <div
@@ -167,10 +65,7 @@ const NoteForm: React.FC<NoteFormProps> = ({
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
       >
         {/* Close button */}
-        <button
-          onClick={closeForm}
-          className="absolute top-2 right-2 text-3xl text-whiteSmoke"
-        >
+        <button onClick={closeForm} className="absolute top-2 right-2 text-3xl text-whiteSmoke">
           &times; {/* Close icon */}
         </button>
         <h2 className="text-3xl font-bold text-white mb-4 text-center capitalize">
@@ -178,10 +73,7 @@ const NoteForm: React.FC<NoteFormProps> = ({
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              htmlFor="title"
-              className="block mb-2 text-pitchBlack capitalize text-xl "
-            >
+            <label htmlFor="title" className="block mb-2 text-pitchBlack capitalize text-xl ">
               Title (max 33 characters):
             </label>
             <input
@@ -196,10 +88,7 @@ const NoteForm: React.FC<NoteFormProps> = ({
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="content"
-              className="block mb-2 text-whiteSmoke capitalize text-xl"
-            >
+            <label htmlFor="content" className="block mb-2 text-whiteSmoke capitalize text-xl">
               Content:
             </label>
             <textarea
@@ -220,28 +109,16 @@ const NoteForm: React.FC<NoteFormProps> = ({
             >
               Upload an Image
             </button>
-            <input
-              type="file"
-              id="imageInput"
-              onChange={handleImageChange}
-              className="hidden"
-            />
+            <input type="file" id="imageInput" onChange={handleImageChange} className="hidden" />
           </div>
           {imagePreview && (
             <div className="mb-4">
-              <img
-                src={imagePreview}
-                alt="preview"
-                className="w-24 h-24 border rounded"
-              />
+              <img src={imagePreview} alt="preview" className="w-24 h-24 border rounded" />
             </div>
           )}
 
           <div className="flex justify-center">
-            <button
-              type="submit"
-              className="bg-red-500 text-smokeWhite py-2 px-4 rounded"
-            >
+            <button type="submit" className="bg-red-500 text-smokeWhite py-2 px-4 rounded">
               {editingNote ? "Update Note" : "Add Note"}
             </button>
           </div>

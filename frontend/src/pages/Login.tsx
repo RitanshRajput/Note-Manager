@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/users/login", {
+      const response = await fetch("https://ritz-note-manager.onrender.com/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,8 +50,7 @@ const Login: React.FC = () => {
         <h2 className="text-2xl text-neonOceanBlue mb-6">Login</h2>
         <div className="mb-4">
           <label htmlFor="email" className="block mb-2 text-black">
-            Email:{" "}
-            {errors.email && <span className="text-red-500">* required</span>}
+            Email: {errors.email && <span className="text-red-500">* required</span>}
           </label>
           <input
             type="email"
@@ -65,10 +64,7 @@ const Login: React.FC = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block mb-2 text-black">
-            Password:{" "}
-            {errors.password && (
-              <span className="text-red-500">* required</span>
-            )}
+            Password: {errors.password && <span className="text-red-500">* required</span>}
           </label>
           <div className="relative">
             <input
@@ -90,10 +86,7 @@ const Login: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <button
-            type="submit"
-            className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded"
-          >
+          <button type="submit" className="bg-neonOceanBlue text-smokeWhite py-2 px-4 rounded">
             Login
           </button>
         </div>

@@ -27,7 +27,7 @@ const Notes: React.FC = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `http://127.0.0.1:5000/api/notes?page=${page}`,
+          `https://ritz-note-manager.onrender.com/api/notes?page=${page}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -53,11 +53,7 @@ const Notes: React.FC = () => {
     fetchNotes();
   }, [navigate, page]);
 
-  const addNote = async (
-    title: string,
-    content: string,
-    image: File | null
-  ) => {
+  const addNote = async (title: string, content: string, image: File | null) => {
     try {
       const token = localStorage.getItem("token");
       const formData = new FormData();
@@ -153,9 +149,7 @@ const Notes: React.FC = () => {
   return (
     <div className="p-8 bg-white">
       <div className="flex justify-between items-center mb-6">
-        <h1 className=" mt-[-20px] text-4xl text-neonOceanBlue font-bold">
-          Note Manager
-        </h1>
+        <h1 className=" mt-[-20px] text-4xl text-neonOceanBlue font-bold">Note Manager</h1>
         <div className="flex">
           <button
             onClick={handleLogout}
@@ -190,13 +184,8 @@ const Notes: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 mx-4 my-12">
         {notes.map((note, index) => {
-          const backgroundColors = [
-            "bg-yellow-200",
-            "bg-pink-200",
-            "bg-blue-200",
-          ];
-          const backgroundColor =
-            backgroundColors[index % backgroundColors.length];
+          const backgroundColors = ["bg-yellow-200", "bg-pink-200", "bg-blue-200"];
+          const backgroundColor = backgroundColors[index % backgroundColors.length];
 
           return (
             <div
@@ -248,11 +237,7 @@ const Notes: React.FC = () => {
               </div>
               {note.image && (
                 <div className="mb-1">
-                  <img
-                    src={note.image}
-                    alt="note"
-                    className="w-32 h-32 border rounded"
-                  />
+                  <img src={note.image} alt="note" className="w-32 h-32 border rounded" />
                 </div>
               )}
             </div>
