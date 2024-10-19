@@ -26,14 +26,11 @@ const Notes: React.FC = () => {
     const fetchNotes = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(
-          `https://ritz-note-manager.onrender.com/api/notes?page=${page}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`http://127.0.0.1:5000/api/notes?page=${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.status === 401) {
           navigate("/login");
         } else {
