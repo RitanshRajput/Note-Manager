@@ -2,7 +2,8 @@
 - This web application is use to keep track of your notes, which includes Title, Description and Images if necessary
 - In this application we have use Authentication to only let authenticate User to access there Notes and make changes if needed
 - With CRUD operation I have also learned Hashing certain Data (password)
-- Also JWT (JSON web token) for creating session token to let a certain User be active for certain timeframe and if the timeframes is over then they automatically gets LogOut
+- Also JWT (JSON web token) for creating session token to let a certain User be active for certain timeframe
+- and if the timeframes is over then they automatically gets LogOut, also maily for Authentication and authorization.
 - This project is Responsive as Well (I have not focused too much on UI since my main target was to learn certain thing)
 - I have also Learned and Use testing (for API i used Postman) and (for backend i used Jest) 
 
