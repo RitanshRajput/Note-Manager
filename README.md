@@ -5,7 +5,21 @@
 - Also JWT (JSON web token) for creating session token to let a certain User be active for certain timeframe
 - and if the timeframes is over then they automatically gets LogOut, also maily for Authentication and authorization.
 - This project is Responsive as Well (I have not focused too much on UI since my main target was to learn certain thing)
-- I have also Learned and Use testing (for API i used Postman) and (for backend i used Jest) 
+- I have also Learned and Use testing (for API i used Postman) and (for backend i used Jest)
+
+
+# Landing Page 
+![Screenshot 2024-10-23 004907](https://github.com/user-attachments/assets/a485d9be-1d1e-4e67-be3a-bab9635c8790)
+
+# Register Page
+![Screenshot 2024-10-23 004918](https://github.com/user-attachments/assets/526ec267-c43a-4fff-8366-9770728e94a6)
+
+# Home Page
+![Screenshot 2024-10-23 004952](https://github.com/user-attachments/assets/37fefd79-73f5-48d8-bdc5-1541704b4868)
+
+# Create New Note 
+![Screenshot 2024-10-23 005033](https://github.com/user-attachments/assets/f48e1aed-69ac-43ea-ad10-03470b451c4d)
+
 
 ## STEP to run this Project :
 # Clone this Repo 
@@ -31,4 +45,5 @@
 - go to the frontend folder and run ( npm run dev )
 
 ### Now you are good to go happy Learning....
-  
+
+
