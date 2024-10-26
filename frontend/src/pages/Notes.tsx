@@ -26,8 +26,7 @@ const Notes: React.FC = () => {
     const fetchNotes = async () => {
       try {
         const token = localStorage.getItem("token");
-        // const response = await fetch(`http://127.0.0.1:5000/api/notes?page=${page}`, {
-        const response = await fetch(`https://note-manager-backend-9km9.onrender.com/api/notes?page=${page}`,{
+         const response = await fetch(`http://127.0.0.1:5000/api/notes?page=${page}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
