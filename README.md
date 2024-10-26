@@ -15,11 +15,10 @@
 ![Screenshot 2024-10-23 004918](https://github.com/user-attachments/assets/526ec267-c43a-4fff-8366-9770728e94a6)
 
 # Home Page
-![Screenshot 2024-10-23 004952](https://github.com/user-attachments/assets/37fefd79-73f5-48d8-bdc5-1541704b4868)
+![Screenshot 2024-10-26 183156](https://github.com/user-attachments/assets/e024368a-6220-443a-bd15-eef53838a548)
 
 # Create New Note 
-![Screenshot 2024-10-23 005033](https://github.com/user-attachments/assets/f48e1aed-69ac-43ea-ad10-03470b451c4d)
-
+![Screenshot 2024-10-26 183305](https://github.com/user-attachments/assets/adcfb317-29a4-4a75-aa59-6a5fe5df4f30)
 
 ## STEP to run this Project :
 # Clone this Repo 
