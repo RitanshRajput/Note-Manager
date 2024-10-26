@@ -48,7 +48,7 @@ const Notes: React.FC = () => {
       }
     };
     fetchNotes();
-  }, [navigate, page]);
+  }, [navigate, page, showForm]);
 
   const addNote = async (title: string, content: string, image: File | null) => {
     try {
@@ -86,6 +86,7 @@ const Notes: React.FC = () => {
         },
       });
       setNotes(notes.filter((note) => note._id !== id));
+      handleCloseForm();
     } catch (error) {
       console.error("Error deleting note:", error);
     }
@@ -117,6 +118,7 @@ const Notes: React.FC = () => {
         const updatedNote = await response.json();
         setNotes(notes.map((note) => (note._id === id ? updatedNote : note)));
         setEditingNote(null);
+        handleCloseForm();
       }
     } catch (error) {
       console.error("Error updating note:", error);
@@ -126,6 +128,10 @@ const Notes: React.FC = () => {
   const handleEdit = (note: Note) => {
     setEditingNote(note);
     setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
   };
 
   const handleLogout = () => {
@@ -144,19 +150,19 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <div className="p-8 bg-white">
+    <div className="p-8 bg-gray-900">
       <div className="flex justify-between items-center mb-6">
-        <h1 className=" mt-[-20px] text-4xl text-neonOceanBlue font-bold">Note Manager</h1>
+        <h1 className=" mt-[-20px] text-4xl text-white font-bold">Note Manager</h1>
         <div className="flex">
-          <button
-            onClick={handleLogout}
-            className="bg-white border border-black text-black py-2 px-4 rounded mr-2"
-          >
+          <button onClick={handleLogout} className="bg-red-500  text-black py-2 px-4 rounded mr-2">
             Logout
           </button>
           <button
-            onClick={() => setShowForm(true)}
-            className="bg-red-500 text-black py-2 px-4 rounded flex items-center border border-black"
+            onClick={() => {
+              setEditingNote(null);
+              setShowForm(true);
+            }}
+            className="bg-neonOceanBlue text-black py-2 px-4 rounded flex items-center border border-white"
           >
             <AiOutlinePlus className="mr-2" />
             New Note
@@ -166,28 +172,22 @@ const Notes: React.FC = () => {
 
       {showForm && (
         <>
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-40"
-            onClick={() => setShowForm(false)}
-          />
+          <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={handleCloseForm} />
           <NoteForm
             addNote={addNote}
             editingNote={editingNote}
             updateNote={updateNote}
-            closeForm={() => setShowForm(false)}
+            closeForm={handleCloseForm}
           />
         </>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 mx-4 my-12">
-        {notes.map((note, index) => {
-          const backgroundColors = ["bg-yellow-200", "bg-pink-200", "bg-blue-200"];
-          const backgroundColor = backgroundColors[index % backgroundColors.length];
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 mx-4 my-12 font-mono">
+        {notes.map((note) => {
           return (
             <div
               key={note._id}
-              className={`rounded-md shadow-sm ${backgroundColor} p-4 relative border border-black`}
+              className={`rounded-sm shadow-sm bg-gray-500 p-4 relative border border-white`}
             >
               {showEditDelete === note._id && (
                 <div className="absolute inset-0 bg-black bg-opacity-30 z-10 flex items-center justify-center">
@@ -217,7 +217,6 @@ const Notes: React.FC = () => {
                 <h2
                   className="text-black text-xl font-bold mb-2 capitalize"
                   style={{
-                    maxWidth: "30ch",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
@@ -226,7 +225,7 @@ const Notes: React.FC = () => {
                   {note.title}
                 </h2>
                 <button onClick={() => handleMenuToggle(note._id)}>
-                  <CiMenuKebab className="text-black" />
+                  <CiMenuKebab className="text-white text-xl" />
                 </button>
               </div>
               <div>
@@ -246,19 +245,19 @@ const Notes: React.FC = () => {
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}
-          className={`mr-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded  border border-blue-800  ${
+          className={`mr-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded border border-white  ${
             page === 1 ? "opacity-35 cursor-not-allowed" : ""
           }`}
         >
           Previous
         </button>
-        <span className="text-whiteSmoke mt-2">
+        <span className="text-white mt-2">
           Page {page} of {totalPages}
         </span>
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages}
-          className={`ml-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded border border-blue-800 ${
+          className={`ml-2 bg-blue-500 text-smokeWhite py-2 px-4 rounded border border-white ${
             page === totalPages ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

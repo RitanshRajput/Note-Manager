@@ -59,13 +59,13 @@ const NoteForm: React.FC<NoteFormProps> = ({ addNote, editingNote, updateNote, c
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white bg-opacity-30 ">
+    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-black">
       <div
         className="bg-opacity-80 p-4 rounded border border-white mb-6 w-[90%] max-w-md relative shadow shadow-fuchsia-200 shadow-md" // Changed width to be responsive
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
       >
         {/* Close button */}
-        <button onClick={closeForm} className="absolute top-2 right-2 text-3xl text-whiteSmoke">
+        <button onClick={closeForm} className="absolute top-2 right-2 text-3xl text-white">
           &times; {/* Close icon */}
         </button>
         <h2 className="text-3xl font-bold text-white mb-4 text-center capitalize">

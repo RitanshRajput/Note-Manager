@@ -8,7 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="bg-white min-h-screen text-pitchBlack">
+      <div className="bg-gray-900 min-h-screen text-pitchBlack">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
