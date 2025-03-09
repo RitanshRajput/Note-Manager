@@ -67,6 +67,7 @@ const Notes: React.FC = () => {
         },
         body: formData,
       });
+      
       if (response.ok) {
         const newNote = await response.json();
         setNotes([...notes, newNote]);
